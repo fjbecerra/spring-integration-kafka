@@ -1,0 +1,36 @@
+{
+    "namespace" : "com.pakius.avro",
+    "type"  : "record",
+    "doc"   :  "This schema describes about Tweet",
+    "name"  : "AvroTweet",
+    "fields" : [
+	    { "name" : "id", "type" : "long" },
+	    { "name" : "idStr" , "type" : "string" },
+	    { "name" : "text" , "type" : "string" },
+	    { "name" : "fromUser" , "type" : "string" },
+	    { "name" : "profileImageUrl" , "type" : "string" },
+	    { "name" : "toUserId" , "type" : "long" },
+	    { "name" : "inReplyToStatusId" , "type" : "long" },
+	    { "name" : "inReplyToUserId" , "type" : "long" },
+	    { "name" : "inReplyToScreenName" , "type" : "string" },
+	    { "name" : "fromUserId" , "type" : "long" },
+	    { "name" : "languageCode" , "type" : "string" },
+	    { "name" : "retweetCount" , "type" : "int" },
+	    { "name" : "retweeted" , "type" : "boolean" },
+
+	    { "name" : "user" , "type" : {
+	        "type" : "record",
+	        "name" : "AvroUserProfile",
+	        "fields" : [
+	            { "name" : "id" , "type" : "long" },
+	            { "name" : "name", "type" : "string"}
+	        ]
+	    	}
+	    }
+	]
+}
+
+
+
+
+

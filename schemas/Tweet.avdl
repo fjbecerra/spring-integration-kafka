@@ -1,0 +1,64 @@
+@namespace("org.springframework.social.twitter.api")
+protocol TweetProtocol{
+record Tweet {
+	long id;
+    string idStr;
+    string text;
+
+    string fromUser;
+    string profileImageUrl;
+    long toUserId;
+    long inReplyToStatusId;
+    long inReplyToUserId;
+    string inReplyToScreenName;
+    long fromUserId;
+    string languageCode;
+    string source;
+    int retweetCount;
+    boolean retweeted;
+
+    boolean favorited;
+    int favoriteCount;
+
+    "user" {
+        long id;
+        string screenName;
+        string name;
+        string url;
+        string profileImageUrl;
+        string description;
+        string location;
+        string language;
+        int statusesCount;
+        int friendsCount;
+        int followersCount;
+        int favoritesCount;
+        int listedCount;
+        boolean following;
+        boolean followRequestSent;
+        boolean isProtected;
+        boolean notificationsEnabled;
+        boolean verified;
+        boolean geoEnabled;
+        boolean contributorsEnabled;
+        boolean translator;
+        string timeZone;
+        int utcOffset;
+        string sidebarBorderColor;
+        string sidebarFillColor;
+        string backgroundColor;
+        boolean useBackgroundImage;
+        string backgroundImageUrl;
+        boolean backgroundImageTiled;
+        string textColor;
+        string linkColor;
+        boolean showAllInlineMedia;
+        string profileBannerUrl;
+
+        };
+}
+}
+
+
+
+

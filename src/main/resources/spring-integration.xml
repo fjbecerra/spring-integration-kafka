@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int-kafka="http://www.springframework.org/schema/integration/kafka"
+       xsi:schemaLocation="http://www.springframework.org/schema/integration/kafka http://www.springframework.org/schema/integration/kafka/spring-integration-kafka.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/twitter http://www.springframework.org/schema/integration/twitter/spring-integration-twitter.xsd"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-twitter="http://www.springframework.org/schema/integration/twitter">
+
+
+    <int-twitter:search-inbound-channel-adapter id="searchAdapter" channel="sourceExtractor"
+                                                query="@ral_quintero" twitter-template="twitterTemplate">
+        <int:poller fixed-rate="3000" max-messages-per-poll="5" />
+    </int-twitter:search-inbound-channel-adapter>
+
+
+   <int:transformer ref="twitterTransform" input-channel="sourceExtractor" output-channel="twitterOut"/>
+
+   <int:service-activator ref="twitterService" input-channel="twitterOut"/>
+
+    <int:publish-subscribe-channel id="inputToKafka"/>
+
+    <int-kafka:outbound-channel-adapter kafka-producer-context-ref="kafkaProducerContext"
+                                        auto-startup="false"
+                                        channel="inputToKafka"
+                                        order="1">
+    </int-kafka:outbound-channel-adapter>
+
+   <int-kafka:producer-context id="kafkaProducerContext" producer-properties="producerProperties"  >
+        <int-kafka:producer-configurations>
+            <int-kafka:producer-configuration broker-list="10.0.2.15:9092"
+                                              key-class-type="java.lang.String"
+                                              value-class-type="com.pakius.avro.AvroTweet"
+                                              topic="twitter-topic"
+                                              value-encoder="kafkaSpecificEncoder"
+                                              key-encoder="kafkaReflectionEncoder"
+                                              partitioner="customPartitioner"/>
+        </int-kafka:producer-configurations>
+    </int-kafka:producer-context>
+
+    <int:logging-channel-adapter id="twitterOut"  level="INFO"/>
+</beans>
